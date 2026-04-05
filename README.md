@@ -2,6 +2,22 @@
 
 CLI tool to clean build artifacts from inactive projects. Supports JS/TS, Rust, and Move project types.
 
+## Prerequisites
+
+- [Bun](https://bun.sh) runtime
+- [7-Zip](https://www.7-zip.org/) — required for compression (`--archive-days`)
+
+```bash
+# macOS
+brew install p7zip
+
+# Ubuntu/Debian
+sudo apt install p7zip-full
+
+# Arch
+sudo pacman -S p7zip
+```
+
 ## Installation
 
 ```bash
