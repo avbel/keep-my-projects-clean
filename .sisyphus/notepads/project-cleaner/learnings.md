@@ -7,3 +7,18 @@
 - Treat missing `rootDir` as a usage error with exit code 2, then validate filesystem existence separately with exit code 1.
 - Tests should clean up temp dirs and stub `process.exit` so both exit paths stay observable.
 - For project scanning, `readdir(..., { withFileTypes: true })` plus `lstat()` on each direct child is enough to skip symlinks without descending past one level.
+- Git activity detection should prefer `git for-each-ref --sort=-committerdate --count=1 --format=%(committerdate:iso) refs/heads/ refs/remotes/` for O(branches) commit-date lookup, then fall back to filesystem `mtime` only when the directory is not a git repo.
+- `isGitRepository()` can stay simple by checking for a `.git` path with `access()` and returning `false` on any failure instead of throwing.
+- Cleaner artifact collection uses a SKIP_CHILDREN set to avoid descending into artifact dirs (node_modules, target, build, .git) when scanning for nested project manifests.
+- `dirSize()` recursive stat sum must happen BEFORE `rm()` — measuring after deletion returns 0.
+- `Promise.all` on size measurement is safe because the dirs are disjoint paths with no overlap.
+- Tests use `Buffer.alloc(sizeBytes, 0)` to create files of exact known size for deterministic bytesFreed assertions.
+- `Bun.Archive` and `Bun.zstdCompressSync/zstdDecompressSync` do NOT exist in Bun 1.1.34 — use manual POSIX tar + `Bun.gzipSync`/`Bun.gunzipSync` (levels 1-9) instead.
+- Minimal POSIX tar (ustar) is ~60 lines: 512-byte header blocks with name/mode/size/checksum, data blocks padded to 512, two empty terminator blocks.
+- `Bun.gzipSync` level parameter type is a union literal `0|1|2|...|9|-1`, so clamped runtime values need an `as` cast.
+- Verification pipeline: write archive → check `size > 0` → `Bun.gunzipSync(bytes)` must not throw → only then `rm()` original.
+- Empty dirs produce a valid tar.gz (just the two terminator blocks compressed) — no special-case needed.
+- CLI entry point (`index.ts`) is pure orchestration: parse config → scan → enrich each project with git info → three-zone decision → display results → summary. No business logic beyond wiring.
+- Three-zone logic: active (skip) → stale (clean only) → archive (clean + compress for git repos; clean only for non-git). Non-git projects must never be compressed.
+- `parseConfig()` handles `--help` internally via `process.exit(0)`, so the entry point doesn't need a separate help branch.
+- Sequential project processing is intentional — spinner display relies on one-at-a-time output.
