@@ -89,9 +89,11 @@ async function main(): Promise<void> {
   displaySummary(summary)
 }
 
-main().catch((err: unknown) => {
-  if (err instanceof Error) {
-    process.stderr.write(`Error: ${err.message}\n`)
-  }
+try {
+  await main()
+} catch (err: unknown) {
+  process.stderr.write(
+    `Error: ${err instanceof Error ? err.message : String(err)}\n`,
+  )
   process.exit(1)
-})
+}

@@ -1,4 +1,5 @@
 import { access, readdir, rm, stat } from 'node:fs/promises'
+import type { Dirent } from 'node:fs'
 import { join } from 'node:path'
 import type {
   CleanResult,
@@ -55,6 +56,14 @@ async function dirSize(dirPath: string): Promise<number> {
   return total
 }
 
+async function safeDirSize(path: string): Promise<number> {
+  try {
+    return await dirSize(path)
+  } catch {
+    return 0
+  }
+}
+
 async function collectJsArtifacts(projectPath: string): Promise<string[]> {
   const artifacts: string[] = []
 
@@ -66,9 +75,11 @@ async function collectJsArtifacts(projectPath: string): Promise<string[]> {
     if (await dirExists(p)) artifacts.push(p)
   }
 
-  const entries = await readdir(projectPath, { withFileTypes: true }).catch(
-    () => [],
-  )
+  let entries: Dirent[] = []
+  try {
+    entries = await readdir(projectPath, { withFileTypes: true })
+  } catch {
+  }
   for (const entry of entries) {
     if (!entry.isDirectory() || entry.name.startsWith('.')) continue
     if (SKIP_CHILDREN.has(entry.name)) continue
@@ -94,9 +105,11 @@ async function collectRustArtifacts(projectPath: string): Promise<string[]> {
   const target = join(projectPath, 'target')
   if (await dirExists(target)) artifacts.push(target)
 
-  const entries = await readdir(projectPath, { withFileTypes: true }).catch(
-    () => [],
-  )
+  let entries: Dirent[] = []
+  try {
+    entries = await readdir(projectPath, { withFileTypes: true })
+  } catch {
+  }
   for (const entry of entries) {
     if (!entry.isDirectory() || entry.name.startsWith('.')) continue
     if (SKIP_CHILDREN.has(entry.name)) continue
@@ -117,9 +130,11 @@ async function collectMoveArtifacts(projectPath: string): Promise<string[]> {
   const build = join(projectPath, 'build')
   if (await dirExists(build)) artifacts.push(build)
 
-  const entries = await readdir(projectPath, { withFileTypes: true }).catch(
-    () => [],
-  )
+  let entries: Dirent[] = []
+  try {
+    entries = await readdir(projectPath, { withFileTypes: true })
+  } catch {
+  }
   for (const entry of entries) {
     if (!entry.isDirectory() || entry.name.startsWith('.')) continue
     if (SKIP_CHILDREN.has(entry.name)) continue
@@ -162,7 +177,7 @@ export async function cleanProject(
     artifactPaths.map(async ({ path, type }) => ({
       path,
       type,
-      sizeBytes: await dirSize(path).catch(() => 0),
+      sizeBytes: await safeDirSize(path),
     })),
   )
 
