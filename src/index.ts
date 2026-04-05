@@ -52,7 +52,7 @@ async function main(): Promise<void> {
         bytesFreed: 0,
         compressed: false,
         skipped: true,
-        skipReason: `active, last commit ${Math.floor(daysAgo)} days ago`,
+        skipReason: `active, ${project.isGitRepo ? 'last commit' : 'modified'} ${Math.floor(daysAgo)} days ago`,
       }
       displayProjectResult(result)
       continue
@@ -65,7 +65,7 @@ async function main(): Promise<void> {
       summary.totalCleaned++
     }
 
-    if (daysAgo >= config.archiveDays && project.isGitRepo) {
+    if (daysAgo >= config.archiveDays) {
       if (config.confirm) {
         const archivePath = join(config.rootDir, project.name + '.tar.zst')
         const compressResult = await compressProject(
