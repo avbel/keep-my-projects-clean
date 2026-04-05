@@ -259,7 +259,7 @@ Wave FINAL:
 
 ---
 
-- [ ] 3. Config module
+- [x] 3. Config module
 
   **What to do**:
   - Create `src/config.ts` that:
@@ -323,7 +323,7 @@ Wave FINAL:
 
 ---
 
-- [ ] 4. Scanner module
+- [x] 4. Scanner module
 
   **What to do**:
   - Create `src/scanner.ts` that:
@@ -391,7 +391,7 @@ Wave FINAL:
 
 ---
 
-- [ ] 5. Git module
+- [x] 5. Git module
 
   **What to do**:
   - Create `src/git.ts` that:
@@ -457,7 +457,7 @@ Wave FINAL:
 
 ---
 
-- [ ] 6. Display module
+- [x] 6. Display module
 
   **What to do**:
   - Create `src/display.ts` that:
@@ -525,7 +525,7 @@ Wave FINAL:
 
 ---
 
-- [ ] 7. Cleaner module
+- [x] 7. Cleaner module
 
   **What to do**:
   - Create `src/cleaner.ts` that:
@@ -719,7 +719,7 @@ Wave FINAL:
 
 ---
 
-- [ ] 8. Compressor module
+- [x] 8. Compressor module
 
   **What to do**:
   - Create `src/compressor.ts` that:
@@ -852,7 +852,7 @@ Wave FINAL:
 
 ---
 
-- [ ] 9. Entry point
+- [x] 9. Entry point
 
   **What to do**:
   - Create `src/index.ts` that:

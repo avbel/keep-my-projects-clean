@@ -22,3 +22,8 @@
 - Three-zone logic: active (skip) → stale (clean only) → archive (clean + compress for git repos; clean only for non-git). Non-git projects must never be compressed.
 - `parseConfig()` handles `--help` internally via `process.exit(0)`, so the entry point doesn't need a separate help branch.
 - Sequential project processing is intentional — spinner display relies on one-at-a-time output.
+## 2026-04-05
+
+- Added Husky pre-commit linting with `bunx lint-staged` and `oxlint` for `*.ts` files.
+- `bunx husky init` created `.husky/pre-commit`; the hook was replaced to run lint-staged instead of tests.
+- `prepare` script should be `husky` so hook installation happens via `bun run prepare`.

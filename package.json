@@ -4,9 +4,17 @@
   "private": true,
   "scripts": {
     "start": "bun src/index.ts",
-    "clean": "bun src/index.ts"
+    "clean": "bun src/index.ts",
+    "lint": "oxlint src/",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.ts": ["oxlint"]
   },
   "devDependencies": {
-    "bun-types": "^1.3.11"
+    "bun-types": "^1.3.11",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "oxlint": "^1.58.0"
   }
 }

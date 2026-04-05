@@ -5,7 +5,14 @@
     "ses_2a2cf6970ffe2MkZVXhRDxgiDP",
     "ses_2a2b9ea1affeNzRVMCTIJJvYGc",
     "ses_2a2b7123bffe9bl6LkTmvrw0lS",
-    "ses_2a2b3e11effe2nJ7cgNgYQY8k9"
+    "ses_2a2b3e11effe2nJ7cgNgYQY8k9",
+    "ses_2a2ae750fffeI4QybwNR1lnyKN",
+    "ses_2a2abc940ffejK6q2s7c722nCU",
+    "ses_2a2a861e5ffe3lCqTeQi2bqEVe",
+    "ses_2a2a3cddcffe4TCs5i9VMFm02f",
+    "ses_2a29fcac0ffe4xBvxkKejFVg3D",
+    "ses_2a297b0f8ffec550b21sbsLQMn",
+    "ses_2a2938575ffeNiyV3i8t8FEco4"
   ],
   "plan_name": "project-cleaner",
   "agent": "atlas",
@@ -36,6 +43,60 @@
       "agent": "Sisyphus-Junior",
       "category": "quick",
       "updated_at": "2026-04-05T11:02:22.160Z"
+    },
+    "todo:4": {
+      "task_key": "todo:4",
+      "task_label": "4",
+      "task_title": "Scanner module",
+      "session_id": "ses_2a2ae750fffeI4QybwNR1lnyKN",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-05T11:07:14.201Z"
+    },
+    "todo:5": {
+      "task_key": "todo:5",
+      "task_label": "5",
+      "task_title": "Git module",
+      "session_id": "ses_2a2abc940ffejK6q2s7c722nCU",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-05T11:10:47.262Z"
+    },
+    "todo:6": {
+      "task_key": "todo:6",
+      "task_label": "6",
+      "task_title": "Display module",
+      "session_id": "ses_2a2a861e5ffe3lCqTeQi2bqEVe",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-05T11:14:28.382Z"
+    },
+    "todo:7": {
+      "task_key": "todo:7",
+      "task_label": "7",
+      "task_title": "Cleaner module",
+      "session_id": "ses_2a2a3cddcffe4TCs5i9VMFm02f",
+      "agent": "Sisyphus-Junior",
+      "category": "unspecified-high",
+      "updated_at": "2026-04-05T11:20:11.748Z"
+    },
+    "todo:8": {
+      "task_key": "todo:8",
+      "task_label": "8",
+      "task_title": "Compressor module",
+      "session_id": "ses_2a29fcac0ffe4xBvxkKejFVg3D",
+      "agent": "Sisyphus-Junior",
+      "category": "unspecified-high",
+      "updated_at": "2026-04-05T11:25:27.919Z"
+    },
+    "todo:9": {
+      "task_key": "todo:9",
+      "task_label": "9",
+      "task_title": "Entry point",
+      "session_id": "ses_2a2938575ffeNiyV3i8t8FEco4",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-05T11:36:08.226Z"
     }
   }
 }
