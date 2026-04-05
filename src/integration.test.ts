@@ -624,15 +624,15 @@ describe('Group 9: compressor integration', () => {
   test('compressProject creates archive and removes original', async () => {
     const projectDir = join(tmpRoot, 'to-compress')
     mkdirSync(projectDir, { recursive: true })
-    writeFileSync(join(projectDir, 'main.ts'), 'export const x = 1')
-    writeFileSync(join(projectDir, 'README.md'), '# Test')
+    writeFileSync(join(projectDir, 'main.ts'), 'x'.repeat(10_000))
+    writeFileSync(join(projectDir, 'README.md'), 'y'.repeat(10_000))
 
     const archivePath = join(tmpRoot, 'to-compress.7z')
 
     const result = await compressProject(projectDir, archivePath, 3)
 
     expect(result.success).toBe(true)
-    expect(result.archiveSize).toBeGreaterThan(0)
+    expect(result.bytesFreed).toBeGreaterThan(0)
     expect(existsSync(archivePath)).toBe(true)
     expect(existsSync(projectDir)).toBe(false)
   })
@@ -647,7 +647,7 @@ describe('Group 9: compressor integration', () => {
     const result = await compressProject(projectDir, archivePath, 1)
 
     expect(result.success).toBe(true)
-    expect(result.archiveSize).toBeGreaterThan(0)
+    expect(result.bytesFreed).toBeGreaterThan(0)
     expect(existsSync(projectDir)).toBe(false)
   })
 })

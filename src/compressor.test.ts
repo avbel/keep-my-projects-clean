@@ -59,14 +59,14 @@ describe('compressProject', () => {
     const root = makeTempDir(tempDirs);
     const projectDir = join(root, 'project');
     mkdirSync(projectDir, { recursive: true });
-    writeFileSync(join(projectDir, 'index.ts'), 'console.log("hello");');
-    writeFileSync(join(projectDir, 'README.md'), '# My Project');
+    writeFileSync(join(projectDir, 'index.ts'), 'x'.repeat(10_000));
+    writeFileSync(join(projectDir, 'README.md'), 'y'.repeat(10_000));
 
     const outputPath = join(root, 'project.7z');
     const result = await compressProject(projectDir, outputPath, 5);
 
     expect(result.success).toBe(true);
-    expect(result.archiveSize).toBeGreaterThan(25);
+    expect(result.bytesFreed).toBeGreaterThan(0);
     expect(existsSync(outputPath)).toBe(true);
 
     const extractDir = join(root, 'extracted');
@@ -76,8 +76,8 @@ describe('compressProject', () => {
     const extracted = collectFiles(extractDir);
     expect(extracted).toContain('index.ts');
     expect(extracted).toContain('README.md');
-    expect(readFileSync(join(extractDir, 'index.ts'), 'utf-8')).toBe('console.log("hello");');
-    expect(readFileSync(join(extractDir, 'README.md'), 'utf-8')).toBe('# My Project');
+    expect(readFileSync(join(extractDir, 'index.ts'), 'utf-8')).toBe('x'.repeat(10_000));
+    expect(readFileSync(join(extractDir, 'README.md'), 'utf-8')).toBe('y'.repeat(10_000));
   });
 
   it('preserves nested directory structure after extraction', async () => {
@@ -131,7 +131,7 @@ describe('compressProject', () => {
     const result = await compressProject(projectDir, outputPath, 5);
 
     expect(result.success).toBe(true);
-    expect(result.archiveSize).toBeGreaterThan(0);
+    expect(result.bytesFreed).toBeGreaterThan(0);
 
     const extractDir = join(root, 'extracted');
     mkdirSync(extractDir);
@@ -169,7 +169,7 @@ describe('compressProject', () => {
 
     expect(resultLow.success).toBe(true);
     expect(resultHigh.success).toBe(true);
-    expect(resultHigh.archiveSize).toBeLessThanOrEqual(resultLow.archiveSize);
+    expect(resultHigh.bytesFreed).toBeGreaterThanOrEqual(resultLow.bytesFreed);
   });
 
   it('preserves binary file content through compress/extract cycle', async () => {

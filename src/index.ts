@@ -78,7 +78,7 @@ async function main(): Promise<void> {
         if (compressResult.success) {
           summary.totalCompressed++
           cleanResult.compressed = true
-          cleanResult.bytesFreed += compressResult.archiveSize
+          cleanResult.bytesFreed += compressResult.bytesFreed
         }
       } else {
         cleanResult.compressed = true
