@@ -5,5 +5,8 @@
   "scripts": {
     "start": "bun src/index.ts",
     "clean": "bun src/index.ts"
+  },
+  "devDependencies": {
+    "bun-types": "^1.3.11"
   }
 }

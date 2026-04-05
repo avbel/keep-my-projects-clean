@@ -1,0 +1,41 @@
+{
+  "active_plan": "/Users/avbel/Projects/keep-my-projects-clean/.sisyphus/plans/project-cleaner.md",
+  "started_at": "2026-04-05T10:50:53.981Z",
+  "session_ids": [
+    "ses_2a2cf6970ffe2MkZVXhRDxgiDP",
+    "ses_2a2b9ea1affeNzRVMCTIJJvYGc",
+    "ses_2a2b7123bffe9bl6LkTmvrw0lS",
+    "ses_2a2b3e11effe2nJ7cgNgYQY8k9"
+  ],
+  "plan_name": "project-cleaner",
+  "agent": "atlas",
+  "task_sessions": {
+    "todo:1": {
+      "task_key": "todo:1",
+      "task_label": "1",
+      "task_title": "Project scaffold",
+      "session_id": "ses_2a2b9ea1affeNzRVMCTIJJvYGc",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-05T10:55:08.233Z"
+    },
+    "todo:2": {
+      "task_key": "todo:2",
+      "task_label": "2",
+      "task_title": "Type definitions",
+      "session_id": "ses_2a2b7123bffe9bl6LkTmvrw0lS",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-05T10:58:22.678Z"
+    },
+    "todo:3": {
+      "task_key": "todo:3",
+      "task_label": "3",
+      "task_title": "Config module",
+      "session_id": "ses_2a2b3e11effe2nJ7cgNgYQY8k9",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-05T11:02:22.160Z"
+    }
+  }
+}
