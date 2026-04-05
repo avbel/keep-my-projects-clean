@@ -5,6 +5,7 @@
   "scripts": {
     "start": "bun src/index.ts",
     "clean": "bun src/index.ts",
+    "build": "bun build --compile src/index.ts --outfile dist/clean-projects",
     "lint": "oxlint src/",
     "prepare": "husky"
   },
