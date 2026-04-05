@@ -60,7 +60,7 @@ export function projectIcon(types: ProjectType[]): string {
     return '📁'
   }
 
-  return icons.join('')
+  return icons.join('\t')
 }
 
 export function formatBytes(bytes: number): string {

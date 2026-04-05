@@ -11,6 +11,20 @@ async function fileExists(path: string): Promise<boolean> {
   }
 }
 
+async function hasChildManifest(parentPath: string, manifest: string): Promise<boolean> {
+  let entries: import('node:fs').Dirent[];
+  try {
+    entries = await readdir(parentPath, { withFileTypes: true });
+  } catch {
+    return false;
+  }
+  for (const child of entries) {
+    if (!child.isDirectory() || child.name.startsWith('.')) continue;
+    if (await fileExists(join(parentPath, child.name, manifest))) return true;
+  }
+  return false;
+}
+
 export async function scanProjects(rootDir: string): Promise<ProjectInfo[]> {
   const entries = await readdir(rootDir, { withFileTypes: true });
   const projects: ProjectInfo[] = [];
@@ -27,7 +41,11 @@ export async function scanProjects(rootDir: string): Promise<ProjectInfo[]> {
 
     if (await fileExists(join(projectPath, 'package.json'))) types.push('js');
     if (await fileExists(join(projectPath, 'Cargo.toml'))) types.push('rust');
-    if (await fileExists(join(projectPath, 'Move.toml'))) types.push('move');
+    if (await fileExists(join(projectPath, 'Move.toml'))) {
+      types.push('move');
+    } else if (await hasChildManifest(projectPath, 'Move.toml')) {
+      types.push('move');
+    }
 
     projects.push({
       name: entry.name,

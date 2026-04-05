@@ -80,6 +80,21 @@ describe('scanProjects', () => {
     expect(projects[0].types).toEqual(['move']);
   });
 
+  it('detects a move project from Move.toml in a subdirectory (level 2)', async () => {
+    const rootDir = makeTempDir();
+    const parentDir = join(rootDir, 'byz-sui-move-modules');
+    mkdirSync(parentDir);
+    const moduleDir = join(parentDir, 'kiosk_tradeport');
+    mkdirSync(moduleDir);
+    writeFileSync(join(moduleDir, 'Move.toml'), '');
+
+    const projects = await scanProjects(rootDir);
+
+    expect(projects).toHaveLength(1);
+    expect(projects[0].name).toBe('byz-sui-move-modules');
+    expect(projects[0].types).toEqual(['move']);
+  });
+
   it('detects a multi-type project', async () => {
     const rootDir = makeTempDir();
     makeProject(rootDir, 'tauri-app', ['package.json', 'Cargo.toml']);
