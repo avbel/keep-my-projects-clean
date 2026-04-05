@@ -1,30 +1,10 @@
-import { readdir, rm } from 'node:fs/promises';
-import { join, relative } from 'node:path';
+import { rm } from 'node:fs/promises';
 
-export async function buildFileMap(
-  dir: string,
-): Promise<Record<string, Blob>> {
-  const fileMap: Record<string, Blob> = {};
-
-  async function recurse(currentDir: string): Promise<void> {
-    const entries = await readdir(currentDir, { withFileTypes: true });
-    for (const entry of entries) {
-      const fullPath = join(currentDir, entry.name);
-      const relPath = relative(dir, fullPath);
-
-      if (entry.isSymbolicLink()) continue;
-
-      if (entry.isDirectory()) {
-        await recurse(fullPath);
-      } else {
-        const content = await Bun.file(fullPath).bytes();
-        fileMap[relPath] = new Blob([content]);
-      }
-    }
+export function assert7zAvailable(): void {
+  const result = Bun.spawnSync(['7z', '--help'], { stderr: 'pipe', stdout: 'pipe' });
+  if (result.exitCode !== 0) {
+    throw new Error('7z is not installed. Install p7zip (brew install p7zip / apt install p7zip-full) and try again.');
   }
-
-  await recurse(dir);
-  return fileMap;
 }
 
 export async function compressProject(
@@ -33,27 +13,19 @@ export async function compressProject(
   level: number,
 ): Promise<{ success: boolean; archiveSize: number }> {
   try {
-    const fileMap = await buildFileMap(projectDir);
-
-    const archive = new Bun.Archive(fileMap);
-    const tarBytes = new Uint8Array(
-      await new Response(archive as unknown as BodyInit).arrayBuffer(),
+    const result = Bun.spawnSync(
+      ['7z', 'a', `-mx=${level}`, outputPath, '.'],
+      { cwd: projectDir, stderr: 'pipe', stdout: 'pipe' },
     );
 
-    const compressed = Bun.zstdCompressSync(tarBytes, { level });
-    await Bun.write(outputPath, compressed);
+    if (result.exitCode !== 0) {
+      return { success: false, archiveSize: 0 };
+    }
 
     const archiveFile = Bun.file(outputPath);
     const archiveSize = archiveFile.size;
 
     if (archiveSize === 0) {
-      return { success: false, archiveSize: 0 };
-    }
-
-    const bytes = new Uint8Array(await archiveFile.arrayBuffer());
-    try {
-      Bun.zstdDecompressSync(bytes);
-    } catch {
       return { success: false, archiveSize: 0 };
     }
 

@@ -9,7 +9,7 @@ const USAGE = [
   'Options:',
   '  --active-days <n>        Skip projects active within N days (default: 30)',
   '  --archive-days <n>       Compress projects inactive for N days (default: 180)',
-  '  --compression-level <n>  Zstd compression level 1-22 (default: 10)',
+  '  --compression-level <n>  7z compression level 0-9 (default: 7)',
   '  --confirm                Actually delete/compress (default: dry-run)',
   '  --help                   Show this help message',
   '',
@@ -50,7 +50,7 @@ export async function parseConfig(argv: string[] = process.argv.slice(2)): Promi
     options: {
       'active-days': { type: 'string', default: '30' },
       'archive-days': { type: 'string', default: '180' },
-      'compression-level': { type: 'string', default: '10' },
+      'compression-level': { type: 'string', default: '7' },
       confirm: { type: 'boolean', default: false },
       help: { type: 'boolean', default: false },
     },
@@ -85,8 +85,8 @@ export async function parseConfig(argv: string[] = process.argv.slice(2)): Promi
     throw new Error('archive-days must be greater than active-days');
   }
 
-  if (compressionLevel < 1 || compressionLevel > 22) {
-    throw new Error('compression-level must be between 1 and 22');
+  if (compressionLevel < 0 || compressionLevel > 9) {
+    throw new Error('compression-level must be between 0 and 9');
   }
 
   return {

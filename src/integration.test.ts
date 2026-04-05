@@ -627,7 +627,7 @@ describe('Group 9: compressor integration', () => {
     writeFileSync(join(projectDir, 'main.ts'), 'export const x = 1')
     writeFileSync(join(projectDir, 'README.md'), '# Test')
 
-    const archivePath = join(tmpRoot, 'to-compress.tar.zst')
+    const archivePath = join(tmpRoot, 'to-compress.7z')
 
     const result = await compressProject(projectDir, archivePath, 3)
 
@@ -643,7 +643,7 @@ describe('Group 9: compressor integration', () => {
     createBackdatedCommit(projectDir, 200)
     writeFileSync(join(projectDir, 'src.ts'), 'export default {}')
 
-    const archivePath = join(tmpRoot, 'git-compress.tar.zst')
+    const archivePath = join(tmpRoot, 'git-compress.7z')
     const result = await compressProject(projectDir, archivePath, 1)
 
     expect(result.success).toBe(true)

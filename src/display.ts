@@ -133,7 +133,7 @@ export function displayProjectResult(result: CleanResult): void {
   }
 
   if (result.compressed) {
-    const summary = `🗜️ ${icon} ${result.projectName} — compressed → ${result.projectName}.tar.zst (${formatBytes(result.bytesFreed)} freed)`
+    const summary = `🗜️ ${icon} ${result.projectName} — compressed → ${result.projectName}.7z (${formatBytes(result.bytesFreed)} freed)`
     stopActiveSpinner(summary)
     return
   }

@@ -61,7 +61,7 @@ export interface Config {
   archiveDays: number
   /** Indicates whether the CLI should actually delete files instead of doing a dry run. */
   confirm: boolean
-  /** Zstandard compression level, validated at parse time. */
+  /** 7z compression level (0-9), validated at parse time. */
   compressionLevel: number
 }
 

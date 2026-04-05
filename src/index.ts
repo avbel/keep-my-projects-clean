@@ -2,7 +2,7 @@ import { join } from 'node:path'
 import process from 'node:process'
 
 import { parseConfig } from './config'
-import { compressProject } from './compressor'
+import { assert7zAvailable, compressProject } from './compressor'
 import { cleanProject } from './cleaner'
 import {
   displayDryRunBanner,
@@ -18,6 +18,8 @@ const MS_PER_DAY = 1000 * 60 * 60 * 24
 
 async function main(): Promise<void> {
   const config = await parseConfig()
+
+  assert7zAvailable()
 
   if (!config.confirm) {
     displayDryRunBanner()
@@ -67,7 +69,7 @@ async function main(): Promise<void> {
 
     if (daysAgo >= config.archiveDays) {
       if (config.confirm) {
-        const archivePath = join(config.rootDir, project.name + '.tar.zst')
+        const archivePath = join(config.rootDir, project.name + '.7z')
         const compressResult = await compressProject(
           project.path,
           archivePath,

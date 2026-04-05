@@ -46,7 +46,7 @@ describe('parseConfig', () => {
       activeDays: 30,
       archiveDays: 180,
       confirm: false,
-      compressionLevel: 10,
+      compressionLevel: 7,
     });
   });
 
@@ -66,12 +66,12 @@ describe('parseConfig', () => {
     expect(config.archiveDays).toBe(90);
   });
 
-  it('parses --compression-level 22', async () => {
+  it('parses --compression-level 9', async () => {
     const rootDir = makeTempDir();
 
-    const config = await parseConfig([rootDir, '--compression-level', '22']);
+    const config = await parseConfig([rootDir, '--compression-level', '9']);
 
-    expect(config.compressionLevel).toBe(22);
+    expect(config.compressionLevel).toBe(9);
   });
 
   it('parses --confirm', async () => {
@@ -109,19 +109,11 @@ describe('parseConfig', () => {
     ).rejects.toThrow('archive-days must be greater than active-days')
   });
 
-  it('throws when compression-level is 0', async () => {
+  it('throws when compression-level is 10', async () => {
     const rootDir = makeTempDir();
 
-    expect(parseConfig([rootDir, '--compression-level', '0'])).rejects.toThrow(
-      'compression-level must be between 1 and 22',
-    )
-  });
-
-  it('throws when compression-level is 23', async () => {
-    const rootDir = makeTempDir();
-
-    expect(parseConfig([rootDir, '--compression-level', '23'])).rejects.toThrow(
-      'compression-level must be between 1 and 22',
+    expect(parseConfig([rootDir, '--compression-level', '10'])).rejects.toThrow(
+      'compression-level must be between 0 and 9',
     )
   });
 
