@@ -36,10 +36,10 @@ describe('parseConfig', () => {
     return tempDir;
   }
 
-  it('uses default values when no flags are given', () => {
+  it('uses default values when no flags are given', async () => {
     const rootDir = makeTempDir();
 
-    const config = parseConfig([rootDir]);
+    const config = await parseConfig([rootDir]);
 
     expect(config).toEqual({
       rootDir,
@@ -50,83 +50,83 @@ describe('parseConfig', () => {
     });
   });
 
-  it('parses --active-days 7', () => {
+  it('parses --active-days 7', async () => {
     const rootDir = makeTempDir();
 
-    const config = parseConfig([rootDir, '--active-days', '7']);
+    const config = await parseConfig([rootDir, '--active-days', '7']);
 
     expect(config.activeDays).toBe(7);
   });
 
-  it('parses --archive-days 90', () => {
+  it('parses --archive-days 90', async () => {
     const rootDir = makeTempDir();
 
-    const config = parseConfig([rootDir, '--archive-days', '90']);
+    const config = await parseConfig([rootDir, '--archive-days', '90']);
 
     expect(config.archiveDays).toBe(90);
   });
 
-  it('parses --compression-level 22', () => {
+  it('parses --compression-level 22', async () => {
     const rootDir = makeTempDir();
 
-    const config = parseConfig([rootDir, '--compression-level', '22']);
+    const config = await parseConfig([rootDir, '--compression-level', '22']);
 
     expect(config.compressionLevel).toBe(22);
   });
 
-  it('parses --confirm', () => {
+  it('parses --confirm', async () => {
     const rootDir = makeTempDir();
 
-    const config = parseConfig([rootDir, '--confirm']);
+    const config = await parseConfig([rootDir, '--confirm']);
 
     expect(config.confirm).toBe(true);
   });
 
-  it('prefers CLI rootDir over PROJECTS_DIR', () => {
+  it('prefers CLI rootDir over PROJECTS_DIR', async () => {
     const cliRootDir = makeTempDir();
     const envRootDir = makeTempDir();
     process.env.PROJECTS_DIR = envRootDir;
 
-    const config = parseConfig([cliRootDir]);
+    const config = await parseConfig([cliRootDir]);
 
     expect(config.rootDir).toBe(cliRootDir);
   });
 
-  it('uses PROJECTS_DIR when no positional arg is given', () => {
+  it('uses PROJECTS_DIR when no positional arg is given', async () => {
     const envRootDir = makeTempDir();
     process.env.PROJECTS_DIR = envRootDir;
 
-    const config = parseConfig([]);
+    const config = await parseConfig([]);
 
     expect(config.rootDir).toBe(envRootDir);
   });
 
-  it('throws when archive-days is less than or equal to active-days', () => {
+  it('throws when archive-days is less than or equal to active-days', async () => {
     const rootDir = makeTempDir();
 
-    expect(() => parseConfig([rootDir, '--active-days', '10', '--archive-days', '10'])).toThrow(
-      'archive-days must be greater than active-days',
-    );
+    expect(
+      parseConfig([rootDir, '--active-days', '10', '--archive-days', '10']),
+    ).rejects.toThrow('archive-days must be greater than active-days')
   });
 
-  it('throws when compression-level is 0', () => {
+  it('throws when compression-level is 0', async () => {
     const rootDir = makeTempDir();
 
-    expect(() => parseConfig([rootDir, '--compression-level', '0'])).toThrow(
+    expect(parseConfig([rootDir, '--compression-level', '0'])).rejects.toThrow(
       'compression-level must be between 1 and 22',
-    );
+    )
   });
 
-  it('throws when compression-level is 23', () => {
+  it('throws when compression-level is 23', async () => {
     const rootDir = makeTempDir();
 
-    expect(() => parseConfig([rootDir, '--compression-level', '23'])).toThrow(
+    expect(parseConfig([rootDir, '--compression-level', '23'])).rejects.toThrow(
       'compression-level must be between 1 and 22',
-    );
+    )
   });
 
-  it('exits when rootDir is missing entirely', () => {
-    expect(() => parseConfig([])).toThrow('exit:2');
-    expect(writeMock.mock.calls.length).toBeGreaterThan(0);
+  it('exits when rootDir is missing entirely', async () => {
+    expect(parseConfig([])).rejects.toThrow('exit:2')
+    expect(writeMock.mock.calls.length).toBeGreaterThan(0)
   });
 });
