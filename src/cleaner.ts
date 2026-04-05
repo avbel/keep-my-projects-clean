@@ -1,4 +1,4 @@
-import { access, readdir, rm, stat } from 'node:fs/promises'
+import { access, lstat, readdir, rm } from 'node:fs/promises'
 import type { Dirent } from 'node:fs'
 import { join } from 'node:path'
 import type {
@@ -46,10 +46,11 @@ async function dirSize(dirPath: string): Promise<number> {
   const entries = await readdir(dirPath, { withFileTypes: true })
   for (const entry of entries) {
     const entryPath = join(dirPath, entry.name)
-    if (entry.isDirectory()) {
+    const s = await lstat(entryPath)
+    if (s.isSymbolicLink()) continue
+    if (s.isDirectory()) {
       total += await dirSize(entryPath)
     } else {
-      const s = await stat(entryPath)
       total += s.size
     }
   }
