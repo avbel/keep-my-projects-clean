@@ -1,4 +1,4 @@
-import { readdir, readFile, rm } from 'node:fs/promises';
+import { readdir, rm } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 
 export async function buildFileMap(
@@ -17,7 +17,7 @@ export async function buildFileMap(
       if (entry.isDirectory()) {
         await recurse(fullPath);
       } else {
-        const content = await readFile(fullPath);
+        const content = await Bun.file(fullPath).bytes();
         fileMap[relPath] = new Blob([content]);
       }
     }

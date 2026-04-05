@@ -1,4 +1,5 @@
 import { join } from 'node:path'
+import process from 'node:process'
 
 import { parseConfig } from './config'
 import { compressProject } from './compressor'
@@ -16,7 +17,7 @@ import type { CleanResult, Summary } from './types'
 const MS_PER_DAY = 1000 * 60 * 60 * 24
 
 async function main(): Promise<void> {
-  const config = parseConfig()
+  const config = await parseConfig()
 
   if (!config.confirm) {
     displayDryRunBanner()

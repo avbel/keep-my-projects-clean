@@ -1,4 +1,5 @@
-import { statSync } from 'node:fs';
+import { lstat } from 'node:fs/promises';
+import process from 'node:process';
 import { parseArgs } from 'node:util';
 import type { Config } from './types';
 
@@ -22,13 +23,11 @@ function printUsage(): void {
 
 function exitWithUsage(code: number): never {
   printUsage();
-  process.exit(code);
-  throw new Error('process.exit did not exit');
+  return process.exit(code);
 }
 
 function exitWithCode(code: number): never {
-  process.exit(code);
-  throw new Error('process.exit did not exit');
+  return process.exit(code);
 }
 
 function parseInteger(value: string, name: string): number {
@@ -45,7 +44,7 @@ function resolveRootDir(positionals: string[]): string | undefined {
   return positionals[0] ?? process.env.PROJECTS_DIR;
 }
 
-export function parseConfig(argv: string[] = process.argv.slice(2)): Config {
+export async function parseConfig(argv: string[] = process.argv.slice(2)): Promise<Config> {
   const { values, positionals } = parseArgs({
     args: argv,
     options: {
@@ -69,7 +68,7 @@ export function parseConfig(argv: string[] = process.argv.slice(2)): Config {
   }
 
   try {
-    const stats = statSync(rootDir);
+    const stats = await lstat(rootDir);
 
     if (!stats.isDirectory()) {
       exitWithCode(1);

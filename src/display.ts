@@ -1,4 +1,5 @@
 import { basename } from 'node:path'
+import process from 'node:process'
 
 import type { CleanResult, ProjectType, Summary } from './types.ts'
 
